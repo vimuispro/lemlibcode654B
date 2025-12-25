@@ -22,6 +22,10 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, -5.75
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
 lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -2.5);
 
+
+pros::Motor front_motor(13, pros::MotorGearset::blue);
+
+
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
@@ -30,6 +34,7 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               410, // drivetrain rpm is 410
                               2 // horizontal drift is 2. If we had traction wheels, it would have been 8
 );
+
 
 // lateral motion controller
 lemlib::ControllerSettings linearController(10, // proportional gain (kP)
@@ -170,9 +175,20 @@ void opcontrol() {
         int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
         // move the robot
-        chassis.arcade(leftY, rightX,false,0.5);
+        chassis.arcade(rightX, leftY,false,0.5);
 
         // delay to save resources
         pros::delay(25);
+
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+    front_motor.move(127);
     }
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        front_motor.move(-127);
+    }
+    else{
+        front_motor.move(0);
+    }
+    }
+    
 }
