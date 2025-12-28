@@ -7,7 +7,7 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // motor groups
 pros::MotorGroup leftMotors({-1, -2, 4},
                             pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-pros::MotorGroup rightMotors({8, -9, -10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+pros::MotorGroup rightMotors({-8, 9, 10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
 // Inertial Sensor on port 10
 pros::Imu imu(12);
@@ -49,9 +49,9 @@ lemlib::ControllerSettings linearController(10, // proportional gain (kP)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(2, // proportional gain (kP)
+lemlib::ControllerSettings angularController(5, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             10, // derivative gain (kD)
+                                             24, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -148,30 +148,31 @@ void autonomous() {
  * Runs in driver control
  */
 void opcontrol() {
-    // loop forever
     while (true) {
-        // get left y and right x positions
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        // Driver control arcade drive with corrected turn input
         int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 
-        // move the robot
-        chassis.arcade(rightX, leftY,false,0.5);
 
-        // delay to save resources
+        chassis.arcade(leftY, rightX);
+
+        // Autonomous turn test on button press A
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+            chassis.setPose(0, 0, 0);            // reset position
+            chassis.turnToHeading(90, 2000);     // turn to 90 degrees with 2 sec timeout
+        }
+
+        // Front motor control with R2 and R1 buttons
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            front_motor.move(127);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            front_motor.move(-127);
+        } else {
+            front_motor.move(0);
+        }
+
         pros::delay(25);
-
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
-    autonomous();
-    }
-
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-    front_motor.move(127);
-    }
-    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-        front_motor.move(-127);
-    }
-    else{
-        front_motor.move(0);
     }
 }
-}
+
+
