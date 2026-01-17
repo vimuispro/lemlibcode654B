@@ -24,7 +24,7 @@ lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -.413);
 
 
 pros::Motor front_motor(20, pros::MotorGearset::blue);
-
+pros::Motor back_motor(15, pros::MotorGearset::blue);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -37,7 +37,7 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP)
+lemlib::ControllerSettings linearController(18, // proportional gain (kP)
                                             0, // integral gain (kI)
                                             3, // derivative gain (kD)
                                             3, // anti windup
@@ -49,9 +49,9 @@ lemlib::ControllerSettings linearController(10, // proportional gain (kP)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(5, // proportional gain (kP)
+lemlib::ControllerSettings angularController(6, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             24, // derivative gain (kD)
+                                             30, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -158,17 +158,33 @@ void opcontrol() {
 
         // Autonomous turn test on button press A
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-            chassis.setPose(0, 0, 0);            // reset position
-            chassis.turnToHeading(90, 2000);     // turn to 90 degrees with 2 sec timeout
+                    // Reset pose to zero at start
+        chassis.setPose(0, 0, 0);
+
+        // Move forward 24 inches along X-axis, same orientation
+        chassis.moveToPose(0, 24, 0, 4000);  // 4000 ms timeout
+
+        pros::delay(500);
+
+        // Move backward 12 inches along X-axis
+        chassis.moveToPose(0, 12, 0, 3000);   // turn to 90 degrees with 2 sec timeout
         }
 
         // Front motor control with R2 and R1 buttons
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             front_motor.move(127);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             front_motor.move(-127);
         } else {
             front_motor.move(0);
+        }
+
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+            back_motor.move(127);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            back_motor.move(-127);
+        } else {
+            back_motor.move(0);
         }
 
         pros::delay(25);
