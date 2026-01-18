@@ -23,7 +23,7 @@ lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, 2.1);
 lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -.413);
 
 
-pros::Motor front_motor(20, pros::MotorGearset::blue);
+pros::Motor front_motor(18, pros::MotorGearset::blue);
 pros::Motor back_motor(15, pros::MotorGearset::blue);
 
 // drivetrain settings
@@ -159,15 +159,14 @@ void opcontrol() {
         // Autonomous turn test on button press A
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
                     // Reset pose to zero at start
-        chassis.setPose(0, 0, 0);
-
-        // Move forward 24 inches along X-axis, same orientation
-        chassis.moveToPose(0, 24, 0, 4000);  // 4000 ms timeout
-
-        pros::delay(500);
-
-        // Move backward 12 inches along X-axis
-        chassis.moveToPose(0, 12, 0, 3000);   // turn to 90 degrees with 2 sec timeout
+        chassis.moveToPose(0, 0, 0, 5000);
+        chassis.moveToPose(23.163, 9.62, 133.925, 5000);
+        chassis.moveToPose(33.796, 1.139, 318.417,5000);
+        chassis.moveToPose(4.566, 34.714, 273.825, 5000);
+        chassis.moveToPose(-12.68, 34.547, 90.771, 5000);
+        chassis.moveToPose(19.113, 34.682, 90.771, 5000);
+        
+        
         }
 
         // Front motor control with R2 and R1 buttons
