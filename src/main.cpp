@@ -18,9 +18,9 @@ pros::Rotation horizontalEnc(-11);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed
 pros::Rotation verticalEnc(19);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, 2.1);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, .4);
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
-lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -.413);
+lemlib::TrackingWheel vertical(&verticalEnc, lemlib::Omniwheel::NEW_2, -.5);
 
 
 pros::Motor front_motor(18, pros::MotorGearset::blue);
@@ -29,17 +29,17 @@ pros::Motor back_motor(15, pros::MotorGearset::blue);
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
-                              12.6, // 10 inch track width
+                              11.425, // 10 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 3.25" omnis
-                              410, // drivetrain rpm is 410
+                              450, // drivetrain rpm is 410
                               2 // horizontal drift is 2. If we had traction wheels, it would have been 8
 );
 
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(18, // proportional gain (kP)
-                                            0, // integral gain (kI)
-                                            3, // derivative gain (kD)
+lemlib::ControllerSettings linearController(13, // proportional gain (kP16
+                                            1, // integral gain (kI)
+                                            37, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
@@ -51,7 +51,7 @@ lemlib::ControllerSettings linearController(18, // proportional gain (kP)
 // angular motion controller
 lemlib::ControllerSettings angularController(6, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             30, // derivative gain (kD)
+                                             31, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -155,18 +155,48 @@ void opcontrol() {
 
 
         chassis.arcade(leftY, rightX);
-
+        //---------------------------Test----------------------------------------
         // Autonomous turn test on button press A
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
                     // Reset pose to zero at start
-        chassis.moveToPose(0, 0, 0, 5000);
-        chassis.moveToPose(23.163, 9.62, 133.925, 5000);
-        chassis.moveToPose(33.796, 1.139, 318.417,5000);
-        chassis.moveToPose(4.566, 34.714, 273.825, 5000);
-        chassis.moveToPose(-12.68, 34.547, 90.771, 5000);
-        chassis.moveToPose(19.113, 34.682, 90.771, 5000);
+            front_motor.move(127);
+            chassis.moveToPose(1.0, 27.0, 9,5000);
+            //intakes blocks
+    
+            pros::delay(1000);
+            
+            //goes toward goal
+            
+            chassis.turnToHeading(-127, 3000);
+            lemlib::MoveToPointParams params;
+            params.forwards = false;
+            
+            chassis.moveToPoint(10.56, 36.217, 5000, params);
+            pros::delay(700);
+            back_motor.move(-127);
+            //outakes blocks
+            
+            pros::delay(1000);
+
+            front_motor.move(0);
+            back_motor.move(0);
+                               //-----------------
+            
+            
+            chassis.moveToPose(-28.717, 6.949, -127, 3000);
+            //------------
+            chassis.moveToPose(-31.706, -8.035, -145, 1000);
+            //chassis.moveToPose(-24.533, 32.746, 5000);
+            //--------------------------------------------------
+            //chassis.moveTo(0.861, 25.156, 5000);
+            //chassis.moveTo(13.56, 33.217, 5000);
+            //chassis.moveTo(-28.717, 6.949, 5000);
+            //chassis.moveTo(-31.706, -6.035, 5000);
+            //chassis.moveTo(-24.901, 23.44, 5000);
+
+            
         
-        
+        //-----------------------------------------------------------------------
         }
 
         // Front motor control with R2 and R1 buttons
