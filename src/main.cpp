@@ -9,13 +9,13 @@ pros::MotorGroup leftMotors({-1, -2, 4},
                             pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
 pros::MotorGroup rightMotors({-8, 9, 10}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
 
-// Inertial Sensor on port 10
+// Inertial Sensor on port 12
 pros::Imu imu(12);
 
 // tracking wheels
-// horizontal tracking wheel encoder. Rotation sensor, port 20, not reversed
+// horizontal tracking wheel encoder. Rotation sensor, port 11, reversed
 pros::Rotation horizontalEnc(-11);
-// vertical tracking wheel encoder. Rotation sensor, port 11, reversed
+// vertical tracking wheel encoder. Rotation sensor, port 19, not reversed
 pros::Rotation verticalEnc(19);
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
 lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_2, .4);
@@ -31,13 +31,13 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
                               &rightMotors, // right motor group
                               11.425, // 10 inch track width
                               lemlib::Omniwheel::NEW_325, // using new 3.25" omnis
-                              450, // drivetrain rpm is 410
+                              450, // drivetrain rpm is 450
                               2 // horizontal drift is 2. If we had traction wheels, it would have been 8
 );
 
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP16
+lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             1, // integral gain (kI)
                                             50, // derivative gain (kD)
                                             3, // anti windup
@@ -159,53 +159,37 @@ void opcontrol() {
         // Autonomous turn test on button press A
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
 
-            chassis.setPose(-47.4, 17.6, 79.5);
-            front_motor.move(127);
+            chassis.setPose(-47.4, 17.6, 79.5); // starting pose
 
-            chassis.moveToPoint(-23, 22, 5000);
+            front_motor.move(127); // start intake
+
+            chassis.moveToPoint(-23, 22, 5000);// goes infront of middle goal
             
-            chassis.turnToHeading(315, 3000);
+            chassis.turnToHeading(315, 3000);// turns backwards
+
             lemlib::MoveToPointParams params;
             params.forwards = false;
+            chassis.moveToPoint(-12.829, 11.806, 5000, params); // moves to goal, backwards
 
-            chassis.moveToPoint(-12.829, 11.806, 5000, params);
+            pros::delay(700);       //let robot settle
+            back_motor.move(-127);  // outake blocks
 
+            pros::delay(2000);      // scores blocks
+            front_motor.move(0);    //stop front motor
+            back_motor.move(-0);     // stop back motor
 
-            back_motor.move(-127);
-            pros::delay(2000);
-            front_motor.move(127);
-            back_motor.move(-127);
-            
+            chassis.moveTo(-47.427, 47.244, 5000); // goes infront of match loader
 
-                  /*  // Reset pose to zero at start
-           
-            //intakes blocks
-    
-            pros::delay(1000);
-            
-            //goes toward goal
-    
-            
-            chassis.moveToPoint(10.56, 36.217, 5000, params);
-            pros::delay(700);
-            back_motor.move(-127);
-            //outakes blocks
-            
-            pros::delay(1000);
+            chassis.turntoPoint(-67.8, 46.5, 3000); //turns to face match loader
 
-            front_motor.move(0);
-            back_motor.move(0);
-                               //-----------------
-            
-            
-            chassis.moveToPose(-28.717, 6.949, -127, 3000);
-            //------------
-            chassis.moveToPose(-31.706, -8.035, -145, 1000);
-            */
+            chassis.moveTo(-60.75, 46.5, 5000); // goes to match loader
 
-            
-        
-        //-----------------------------------------------------------------------
+            chassis.moveTo(-30.5, 47.236, 5000, params); // should go backward into long goal
+            delay(700); // let robot settle
+            front_motor.move(127); // score blocks
+            delay(2000); // let blocks score
+            front_motor.move(0); // stop front motor
+
         }
 
         // Front motor control with R2 and R1 buttons
