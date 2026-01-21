@@ -37,9 +37,9 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(13, // proportional gain (kP16
+lemlib::ControllerSettings linearController(10, // proportional gain (kP16
                                             1, // integral gain (kI)
-                                            37, // derivative gain (kD)
+                                            50, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
@@ -51,7 +51,7 @@ lemlib::ControllerSettings linearController(13, // proportional gain (kP16
 // angular motion controller
 lemlib::ControllerSettings angularController(6, // proportional gain (kP)
                                              0, // integral gain (kI)
-                                             31, // derivative gain (kD)
+                                             49, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -158,18 +158,33 @@ void opcontrol() {
         //---------------------------Test----------------------------------------
         // Autonomous turn test on button press A
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-                    // Reset pose to zero at start
+
+            chassis.setPose(-47.4, 17.6, 79.5);
             front_motor.move(127);
-            chassis.moveToPose(1.0, 27.0, 9,5000);
+
+            chassis.moveToPoint(-23, 22, 5000);
+            
+            chassis.turnToHeading(315, 3000);
+            lemlib::MoveToPointParams params;
+            params.forwards = false;
+
+            chassis.moveToPoint(-12.829, 11.806, 5000, params);
+
+
+            back_motor.move(-127);
+            pros::delay(2000);
+            front_motor.move(127);
+            back_motor.move(-127);
+            
+
+                  /*  // Reset pose to zero at start
+           
             //intakes blocks
     
             pros::delay(1000);
             
             //goes toward goal
-            
-            chassis.turnToHeading(-127, 3000);
-            lemlib::MoveToPointParams params;
-            params.forwards = false;
+    
             
             chassis.moveToPoint(10.56, 36.217, 5000, params);
             pros::delay(700);
@@ -186,13 +201,7 @@ void opcontrol() {
             chassis.moveToPose(-28.717, 6.949, -127, 3000);
             //------------
             chassis.moveToPose(-31.706, -8.035, -145, 1000);
-            //chassis.moveToPose(-24.533, 32.746, 5000);
-            //--------------------------------------------------
-            //chassis.moveTo(0.861, 25.156, 5000);
-            //chassis.moveTo(13.56, 33.217, 5000);
-            //chassis.moveTo(-28.717, 6.949, 5000);
-            //chassis.moveTo(-31.706, -6.035, 5000);
-            //chassis.moveTo(-24.901, 23.44, 5000);
+            */
 
             
         
