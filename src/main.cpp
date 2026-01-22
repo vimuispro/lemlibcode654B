@@ -3,28 +3,31 @@
 #include "config.h"
 #include "driver.h"
 #include "autons.h"
+#include "ui.h"
 DriverControl driver(&controller, &chassis);
 Autons autons(&chassis);
 
+
+
+/*
+So the coordinate system is:
+x = 0 → 479
+y = 0 → 239
+Top‑left corner = (0, 0)
+Bottom‑right corner = (479, 239)
+*/
 void initialize() {
-    pros::lcd::initialize(); // initialize brain screen
-    chassis.calibrate(); // calibrate sensors
-    // the default rate is 50. however, if you need to change the rate, you
-    pros::Task screenTask([&]() {
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta);
-            pros::lcd::print(3, "Rotation Sensor horizontal: %i", horizontalEnc.get_position());
-            pros::lcd::print(4, "Rotation Sensor vertical: %i", verticalEnc.get_position()); // heading
-            // log position telemetry
-            lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
+    pros::lcd::initialize();   // optional, for PROS text
+    chassis.calibrate(); // calibrate sensors    
+    uiInit();                  // ⭐ build your LVGL UI
+
+
  
-            pros::delay(50);
-        }
-    });
-}
+            
+ }
+
+
+ }
 
 /**
  * Runs while the robot is disabled
