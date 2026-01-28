@@ -23,28 +23,16 @@ void DriverControl::update() {
     }
 
     // Front motor control with R2 and R1 buttons
-    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-        front_motor.move(127);
-    } else if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-        front_motor.move(-127);
-    } else {
-        front_motor.move(0);
-    }
+    
 
-    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-        back_motor.move(127);
-    } else if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-        back_motor.move(-127);
-    } else {
-        back_motor.move(0);
-    }
+    
 
-    static bool wingState = false;
+    static bool wingState = true;
     if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        wingState = true; 
+        wingState = false; 
         Wing.set_value(wingState);
     }else{
-        wingState = false; 
+        wingState = true; 
         Wing.set_value(wingState);
     }
     
@@ -63,8 +51,24 @@ void DriverControl::update() {
     }else{
         mgState = false; 
         MG.set_value(mgState);
+        if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        front_motor.move(127);
+    } else if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        front_motor.move(-127);
+    } else {
         front_motor.move(0);
+    }
+
+    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+        back_motor.move(127);
+    } else if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+        back_motor.move(-127);
+    } else if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+        back_motor.move(25);
+    }else {
         back_motor.move(0);
+    }
+
     } 
 
     static bool mdState = false;
