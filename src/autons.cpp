@@ -27,6 +27,10 @@ void Autons::RedLeft() {
     
     chassis->turnToHeading(315, 3000);// turns backwards
 
+    pros::delay(200); 
+    chassis->turnToHeading(315, 3000);// trns backwards
+
+
     lemlib::MoveToPointParams params;
     params.forwards = false;
     chassis->moveToPoint(-12.829, 11.806, 5000, params); // moves to goal, backwards
