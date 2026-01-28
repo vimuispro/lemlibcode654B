@@ -40,22 +40,35 @@ void DriverControl::update() {
     }
 
     static bool wingState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-        wingState = !wingState; // flip the state 
+    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+        wingState = true; 
         Wing.set_value(wingState);
-    } 
+    }else{
+        wingState = false; 
+        Wing.set_value(wingState);
+    }
+    
     static bool mlState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
         mlState = !mlState; // flip the state 
         ML.set_value(mlState);
     } 
+
     static bool mgState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-        mgState = !mgState; // flip the state 
+    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+        mgState = true; 
         MG.set_value(mgState);
+        front_motor.move(127);
+        back_motor.move(127);
+    }else{
+        mgState = false; 
+        MG.set_value(mgState);
+        front_motor.move(0);
+        back_motor.move(0);
     } 
+
     static bool mdState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
         mdState = !mdState; // flip the state 
         MD.set_value(mdState);
     } 
