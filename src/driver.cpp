@@ -42,14 +42,14 @@ void DriverControl::update() {
         ML.set_value(mlState);
     } 
 
-    static bool mgState = false;
+    static bool mgState = true;
     if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-        mgState = true; 
+        mgState = false; 
         MG.set_value(mgState);
         front_motor.move(127);
         back_motor.move(127);
     }else{
-        mgState = false; 
+        mgState = true; 
         MG.set_value(mgState);
         if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
         front_motor.move(127);
