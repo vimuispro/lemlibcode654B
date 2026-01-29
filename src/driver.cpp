@@ -27,12 +27,12 @@ void DriverControl::update() {
 
     
 
-    static bool wingState = true;
+    static bool wingState = false;
     if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        wingState = false; 
+        wingState = true; 
         Wing.set_value(wingState);
     }else{
-        wingState = true; 
+        wingState = false; 
         Wing.set_value(wingState);
     }
     

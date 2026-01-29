@@ -23,26 +23,28 @@ void Autons::RedLeft() {
 
     front_motor.move(127); // start intake
 
-    chassis->moveToPoint(-23, 22, 5000);// goes infront of middle goal
+    chassis->moveToPoint(-20, 21, 5000,{},false);// goes infront of middle goal
     
-    chassis->turnToHeading(315, 3000);// turns backwards
+    chassis->turnToHeading(315, 3000,{},false);// turns backwards
 
     pros::delay(200); 
-    chassis->turnToHeading(315, 3000);// trns backwards
+    chassis->turnToHeading(315, 3000,{},false);// trns backwards
 
-
+    MG.set_value(false);
     lemlib::MoveToPointParams params;
     params.forwards = false;
-    chassis->moveToPoint(-12.829, 11.806, 5000, params); // moves to goal, backwards
+    chassis->moveToPoint(-10.0, 10.0, 5000, params); // moves to goal, backwards
+    
+    pros::delay(700);
+                    //let robot settle
+    back_motor.move(127);  // outake blocks
 
-    pros::delay(700);       //let robot settle
-    back_motor.move(-127);  // outake blocks
-
-    pros::delay(2000);      // scores blocks
-    front_motor.move(0);    //stop front motor
-    back_motor.move(-0);     // stop back motor
-
-    chassis->moveToPoint(-47.427, 47.244, 5000); // goes infront of match loader
+    pros::delay(2000); 
+    chassis->setPose(-13,13,chassis->getPose().theta);     // scores blocks
+    front_motor.brake(); //stop front motor
+    back_motor.brake();    // stop back motor
+    //ML.set_value(true);
+    chassis->moveToPoint(-56.427, 47.244, 5000); // goes infront of match loader
 
     chassis->turnToPoint(-67.8, 46.5, 3000); //turns to face match loader
 
