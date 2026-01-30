@@ -28,11 +28,8 @@ void DriverControl::update() {
     
 
     static bool wingState = false;
-    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        wingState = true; 
-        Wing.set_value(wingState);
-    }else{
-        wingState = false; 
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+        wingState = !wingState; // flip the state 
         Wing.set_value(wingState);
     }
     

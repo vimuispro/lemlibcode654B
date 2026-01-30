@@ -17,7 +17,7 @@ static lv_obj_t* batteryLight;
                // initializes LVGL
 
 lv_obj_t* makeStatusLight(int x, int y, const char* labelText) {
-    lv_obj_t* container = lv_obj_create(lv_scr_act());
+    lv_obj_t* container = lv_obj_create(lv_screen_active());
     lv_obj_set_size(container, 200, 30);
     lv_obj_set_pos(container, x, y);
 
@@ -35,14 +35,14 @@ lv_obj_t* makeStatusLight(int x, int y, const char* labelText) {
 
 void uiInit() {
     // Field
-    field = lv_obj_create(lv_scr_act());
+    field = lv_obj_create(lv_screen_active());
     lv_obj_set_size(field, 240, 240);
     lv_obj_set_style_bg_color(field, lv_color_hex(0x222222), LV_PART_MAIN);
     lv_obj_set_style_border_color(field, lv_color_hex(0xFFFFFF), LV_PART_MAIN);
     lv_obj_set_pos(field, 10, 10);
 
     // Robot dot
-    robotDot = lv_obj_create(lv_scr_act());
+    robotDot = lv_obj_create(lv_screen_active());
     lv_obj_set_size(robotDot, 10, 10);
     lv_obj_set_style_radius(robotDot, LV_RADIUS_CIRCLE, LV_PART_MAIN);
     lv_obj_set_style_bg_color(robotDot, lv_color_hex(0xFF0000), LV_PART_MAIN);

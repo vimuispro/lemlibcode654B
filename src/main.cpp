@@ -45,7 +45,7 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
 
 void autonomous() {
-    //autons.RedLeft();
+    autons.RedLeft();
 }
 
 void opcontrol() {
