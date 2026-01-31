@@ -30,32 +30,37 @@ void Autons::RedLeft() {
     chassis->turnToHeading(315, 3000,{},false);// turns backwards
     ML.set_value(false);
     pros::delay(200); 
-    chassis->turnToHeading(315, 3000,{},false);// trns backwards
+    // trns backwards
 
     MG.set_value(false);
     lemlib::MoveToPointParams params;
     params.forwards = false;
-    chassis->moveToPoint(-9.0, 9.0, 5000, params); // moves to goal, backwards
-    pros::delay(1000);               //let robot settle
+    chassis->moveToPoint(-9.8, 9.8, 5000, params); // moves to goal, backwards
+    pros::delay(800);               //let robot settle
     back_motor.move(127);  // outake blocks
-    pros::delay(4000); 
-    back_motor.move(0);  // outake blocks
-    pros::delay(1000); 
-    back_motor.move(127);
+    pros::delay(3000);
+
     chassis->setPose(-9.0,9.0,chassis->getPose().theta);   // scores blocks
     front_motor.brake(); //stop front motor
     back_motor.brake();    // stop back motor
     ML.set_value(true);
+    //--
+    //--
+    //---------------------Long goal scoring-------------------------------------
+    //--
+    //--
+    //--
+    MG.set_value(true);
     chassis->moveToPoint(-40.427, 47.244, 5000); // goes infront of match loader
 
     chassis->turnToPoint(-67.8, 46.5, 3000); //turns to face match loader
-
-    chassis->moveToPoint(-60.75, 46.5, 5000); // goes to match loader
-
-    chassis->moveToPoint(-30.5, 47.236, 5000, params); // should go backward into long goal
+    front_motor.move(127);
+    chassis->moveToPoint(-60.75, 46.5+3, 2000); // goes to match loader
+    pros::delay(100);
+    chassis->moveToPoint(-15.5, 47.236, 1000, params); // should go backward into long goal
     pros::delay(700); // let robot settle
-    front_motor.move(127); // score blocks
-    pros::delay(2000); // let blocks score
+    back_motor.move(-127); // score blocks
+    pros::delay(500); // let blocks score
     front_motor.move(0); // stop front motor
-
+    pros::delay(10000);
 }
