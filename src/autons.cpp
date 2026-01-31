@@ -15,9 +15,17 @@ void Autons::skillsAuton() {
 }
 
 void Autons::RedRight() {
-    // left side routine
+    chassis->setPose(-61.4, -18.6, 182);
+    chassis->moveToPoint(-61.4, -20, 5000,{.maxSpeed=97},true);
 }
+void Autons::BlueRight() {
+    chassis->setPose(-61.4, -18.6, 182);
+    chassis->moveToPoint(-61.4, -20, 5000,{.maxSpeed=97},true);
+}
+void Autons::BlueLeft() {
+    RedLeft();
 
+}
 void Autons::RedLeft() {
     chassis->setPose(-47.4, 17.6, 79.5); // starting pose
 

@@ -45,7 +45,30 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
 
 void autonomous() {
+
+    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_LEFT) {
+        autons.RedLeft();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_RIGHT) {
+        autons.RedRight();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_LEFT) {
+        autons.BlueLeft();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_RIGHT) {
+        autons.BlueRight();
+        return;
+    }
+
+    // Failsafe if nothing selected
     autons.RedLeft();
+
 }
 
 void opcontrol() {

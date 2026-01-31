@@ -10,6 +10,8 @@ public:
     void skillsAuton();    
     void RedLeft();
     void RedRight();
+    void BlueLeft();
+    void BlueRight();
 
 private:
     lemlib::Chassis* chassis;
