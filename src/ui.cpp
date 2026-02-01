@@ -20,6 +20,7 @@ static lv_obj_t* redLeftBtn;
 static lv_obj_t* redRightBtn;
 static lv_obj_t* blueLeftBtn;
 static lv_obj_t* blueRightBtn;
+static lv_obj_t* skillsBtn;
 
 // Styles
 static lv_style_t selectedStyle;
@@ -149,6 +150,17 @@ void buildFieldScreen() {
         selectedSide = SIDE_RIGHT;
     }, LV_EVENT_CLICKED, NULL);
 
+    skillsBtn = lv_button_create(fieldScreen);
+    lv_obj_set_size(skillsBtn, btnW, btnH);
+    lv_obj_set_pos(skillsBtn, 280, 180);
+    lv_obj_add_style(skillsBtn, &normalStyle, LV_PART_MAIN);
+    lv_obj_t* skLabel = lv_label_create(skillsBtn);
+    lv_label_set_text(skLabel, "Skills");
+    lv_obj_center(skLabel);
+    lv_obj_add_event_cb(skillsBtn, [](lv_event_t* e){
+        selectedAlliance = SKILLS;
+    }, LV_EVENT_CLICKED, NULL);
+
     // Back button
     lv_obj_t* backBtn = lv_button_create(fieldScreen);
     lv_obj_set_size(backBtn, 120, 40);
@@ -172,6 +184,7 @@ void updateAutonHighlight() {
     lv_obj_add_style(redRightBtn, &normalStyle, LV_PART_MAIN);
     lv_obj_add_style(blueLeftBtn, &normalStyle, LV_PART_MAIN);
     lv_obj_add_style(blueRightBtn, &normalStyle, LV_PART_MAIN);
+    lv_obj_add_style(skillsBtn, &normalStyle, LV_PART_MAIN);
 
     // Apply highlight
     if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_LEFT)
@@ -185,6 +198,9 @@ void updateAutonHighlight() {
 
     if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_RIGHT)
         lv_obj_add_style(blueRightBtn, &selectedStyle, LV_PART_MAIN);
+
+    if (selectedAlliance == SKILLS)
+        lv_obj_add_style(skillsBtn, &selectedStyle, LV_PART_MAIN);
 }
 
 // ------------------------

@@ -12,6 +12,7 @@ public:
     void RedRight();
     void BlueLeft();
     void BlueRight();
+    void skills();
 
 private:
     lemlib::Chassis* chassis;

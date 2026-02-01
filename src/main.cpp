@@ -65,6 +65,10 @@ void autonomous() {
         autons.BlueRight();
         return;
     }
+    if (selectedAlliance == SKILLS) {
+        autons.skillsAuton();
+        return;
+    }
 
     // Failsafe if nothing selected
     autons.RedLeft();

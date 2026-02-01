@@ -5,13 +5,18 @@ Autons::Autons(lemlib::Chassis* chassis)
     : chassis(chassis) {}
 
 // Example auton
+void Autons::skills(){
+
+}
 void Autons::testAuton() {
    
 }
 
 // Add more autons here
 void Autons::skillsAuton() {
-    // your skills routine
+    front_motor.move(127);
+    pros::delay(10000);
+    front_motor.move(0);
 }
 
 void Autons::RedRight() {
@@ -31,7 +36,7 @@ void Autons::RedLeft() {
 
     front_motor.move(127); // start intake
 
-    chassis->moveToPoint(-21, 21, 5000,{.maxSpeed=97},true);// goes infront of middle goal
+    chassis->moveToPoint(-21+2, 21, 5000,{.maxSpeed=100},true);// goes infront of middle goal
     chassis->waitUntil(10);
     ML.set_value(true);
     chassis->waitUntilDone();
@@ -43,10 +48,10 @@ void Autons::RedLeft() {
     MG.set_value(false);
     lemlib::MoveToPointParams params;
     params.forwards = false;
-    chassis->moveToPoint(-9.8, 9.8, 5000, params); // moves to goal, backwards
+    chassis->moveToPoint(-9.8, 9.8, 3000, params); // moves to goal, backwards
     pros::delay(800);               //let robot settle
     back_motor.move(127);  // outake blocks
-    pros::delay(3000);
+    pros::delay(2000);
 
     chassis->setPose(-9.0,9.0,chassis->getPose().theta);   // scores blocks
     front_motor.brake(); //stop front motor
@@ -58,17 +63,31 @@ void Autons::RedLeft() {
     //--
     //--
     //--
+    
+    front_motor.move(0);
     MG.set_value(true);
-    chassis->moveToPoint(-40.427, 47.244, 5000); // goes infront of match loader
+    chassis->moveToPoint(-41.427-3, 48.244+3, 5000,{.maxSpeed=97}); // goes infront of match loader
 
     chassis->turnToPoint(-67.8, 46.5, 3000); //turns to face match loader
+    
+    chassis->moveToPoint(-60.75, 46.5+3, 1000); // goes to match loader
+
     front_motor.move(127);
-    chassis->moveToPoint(-60.75, 46.5+3, 2000); // goes to match loader
-    pros::delay(100);
+    pros::delay(1100); // intake
+    front_motor.move(0);
+
     chassis->moveToPoint(-15.5, 47.236, 1000, params); // should go backward into long goal
-    pros::delay(700); // let robot settle
+    pros::delay(900); // let robot settle
+    front_motor.move(127);
     back_motor.move(-127); // score blocks
-    pros::delay(500); // let blocks score
-    front_motor.move(0); // stop front motor
     pros::delay(10000);
+    front_motor.move(0); // stop front motor
+    back_motor.move(0); 
+     //--
+    //--
+    //---------------------Wing-------------------------------------
+    //--
+    //--
+    //--
+    //move backward
 }

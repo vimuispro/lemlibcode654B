@@ -2,6 +2,7 @@
 #include "driver.h"
 #include "config.h"
 #include "autons.h"
+#include "ui.h"
 extern Autons autons;
 
 DriverControl::DriverControl(pros::Controller* controller, lemlib::Chassis* chassis)
@@ -19,7 +20,29 @@ void DriverControl::update() {
     //---------------------------Test----------------------------------------
     // Autonomous turn test on button press A
     if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+        if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_LEFT) {
         autons.RedLeft();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_RIGHT) {
+        autons.RedRight();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_LEFT) {
+        autons.BlueLeft();
+        return;
+    }
+
+    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_RIGHT) {
+        autons.BlueRight();
+        return;
+    }
+    if (selectedAlliance == SKILLS) {
+        autons.skillsAuton();
+        return;
+    }
     }
 
     // Front motor control with R2 and R1 buttons
