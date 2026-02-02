@@ -6,6 +6,7 @@
 // Make enums visible to all files
 enum Alliance { ALLIANCE_NONE, ALLIANCE_RED, ALLIANCE_BLUE, SKILLS };
 enum Side { SIDE_LEFT, SIDE_RIGHT };
+enum Type {ONE, TWO};
 
 // These variables are defined in ui.cpp
 extern Alliance selectedAlliance;

@@ -3,6 +3,7 @@
 #include "config.h"
 #include "autons.h"
 #include "ui.h"
+#include "main.h"
 extern Autons autons;
 
 DriverControl::DriverControl(pros::Controller* controller, lemlib::Chassis* chassis)
@@ -11,38 +12,19 @@ DriverControl::DriverControl(pros::Controller* controller, lemlib::Chassis* chas
 void DriverControl::update() {
   
 
-
+    if (driverControlEnabled){
     int rightX = controller->get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
     int leftY = controller->get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-
+    
 
     chassis->arcade(leftY, rightX);
+    }
     //---------------------------Test----------------------------------------
     // Autonomous turn test on button press A
     if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-        if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_LEFT) {
-        autons.RedLeft();
-        return;
-    }
-
-    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_RIGHT) {
-        autons.RedRight();
-        return;
-    }
-
-    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_LEFT) {
-        autons.BlueLeft();
-        return;
-    }
-
-    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_RIGHT) {
-        autons.BlueRight();
-        return;
-    }
-    if (selectedAlliance == SKILLS) {
-        autons.skillsAuton();
-        return;
-    }
+    driverControlEnabled = false; // turn off driver control 
+    autonomous(); // run auton 
+    driverControlEnabled = true;  // turn on
     }
 
     // Front motor control with R2 and R1 buttons
@@ -51,7 +33,7 @@ void DriverControl::update() {
     
 
     static bool wingState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
         wingState = !wingState; // flip the state 
         Wing.set_value(wingState);
     }
@@ -63,7 +45,7 @@ void DriverControl::update() {
     } 
 
     static bool mgState = true;
-    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+    if (controller->get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
         mgState = false; 
         MG.set_value(mgState);
         front_motor.move(127);

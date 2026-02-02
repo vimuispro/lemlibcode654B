@@ -36,3 +36,5 @@ extern lemlib::OdomSensors sensors;
 extern lemlib::ExpoDriveCurve throttleCurve;
 extern lemlib::ExpoDriveCurve steerCurve;
 extern lemlib::Chassis chassis;
+extern bool driverControlEnabled;
+

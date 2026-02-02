@@ -25,6 +25,7 @@ pros::adi::DigitalOut Wing('A');
 pros::adi::DigitalOut ML('B');
 pros::adi::DigitalOut MG('C');
 pros::adi::DigitalOut MD('D');
+bool driverControlEnabled = true;
 
 // drivetrain + chassis
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.425,

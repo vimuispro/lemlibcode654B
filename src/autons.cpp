@@ -48,7 +48,7 @@ void Autons::RedLeft() {
     MG.set_value(false);
     lemlib::MoveToPointParams params;
     params.forwards = false;
-    chassis->moveToPoint(-9.8, 9.8, 3000, params); // moves to goal, backwards
+    chassis->moveToPoint(-9.8, 9.8, 3000, params,true); // moves to goal, backwards
     pros::delay(800);               //let robot settle
     back_motor.move(127);  // outake blocks
     pros::delay(2000);
@@ -66,17 +66,17 @@ void Autons::RedLeft() {
     
     front_motor.move(0);
     MG.set_value(true);
-    chassis->moveToPoint(-41.427-3, 48.244+3, 5000,{.maxSpeed=97}); // goes infront of match loader
+    chassis->moveToPoint(-41.427+1, 48.244+5, 5000,{.maxSpeed=97}, true); // goes infront of match loader
 
-    chassis->turnToPoint(-67.8, 46.5, 3000); //turns to face match loader
+    chassis->turnToPoint(-67.8, 46.5+1, 3000,{},true); //turns to face match loader
     
-    chassis->moveToPoint(-60.75, 46.5+3, 1000); // goes to match loader
+    chassis->moveToPoint(-60.75, 46.5+3, 1500,{.minSpeed=110},true); // goes to match loader
 
     front_motor.move(127);
     pros::delay(1100); // intake
     front_motor.move(0);
 
-    chassis->moveToPoint(-15.5, 47.236, 1000, params); // should go backward into long goal
+    chassis->moveToPoint(-15.5, 47.236, 1000, params, true); // should go backward into long goal
     pros::delay(900); // let robot settle
     front_motor.move(127);
     back_motor.move(-127); // score blocks

@@ -98,7 +98,7 @@ void buildFieldScreen() {
     int btnW = 140;
     int btnH = 40;
 
-    // Red Left
+    // Red Left 1
     redLeftBtn = lv_button_create(fieldScreen);
     lv_obj_set_size(redLeftBtn, btnW, btnH);
     lv_obj_set_pos(redLeftBtn, 20, 20);
