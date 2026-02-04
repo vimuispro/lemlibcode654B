@@ -21,7 +21,7 @@ void DriverControl::update() {
     }
     //---------------------------Test----------------------------------------
     // Autonomous turn test on button press A
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
     driverControlEnabled = false; // turn off driver control 
     autonomous(); // run auton 
     driverControlEnabled = true;  // turn on
@@ -39,7 +39,7 @@ void DriverControl::update() {
     }
     
     static bool mlState = false;
-    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+    if (controller->get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         mlState = !mlState; // flip the state 
         ML.set_value(mlState);
     } 
