@@ -48,34 +48,30 @@ ASSET(example_txt); // '.' replaced with "_" to make c++ happy
 
 void autonomous() {
 
-    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_LEFT) {
-        autons.RedLeft();
-        return;
-    }
+    switch (selectedAuton) {
 
-    if (selectedAlliance == ALLIANCE_RED && selectedSide == SIDE_RIGHT) {
-        autons.RedRight();
-        return;
-    }
+        case AUTON_SKILLS:
+            autons.skillsAuton();
+            break;
 
-    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_LEFT) {
-        autons.BlueLeft();
-        return;
-    }
+        case AUTON_PUSH7LEFT:
+            autons.Push7Left();
+            break;
 
-    if (selectedAlliance == ALLIANCE_BLUE && selectedSide == SIDE_RIGHT) {
-        autons.BlueRight();
-        return;
-    }
-    if (selectedAlliance == SKILLS) {
-        autons.skillsAuton();
-        return;
-    }
+        case AUTON_M3L4RIGHT:
+            autons.M3L4Right();
+            break;
 
-    // Failsafe if nothing selected
-    autons.RedLeft();
+        case AUTON_AWPLEFT:
+            autons.AWPleft();
+            break;
 
+        default:
+            autons.Push7Left(); // fallback
+            break;
+    }
 }
+
 
 void opcontrol() {
     while (true) {

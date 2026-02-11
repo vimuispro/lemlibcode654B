@@ -4,90 +4,61 @@
 Autons::Autons(lemlib::Chassis* chassis)
     : chassis(chassis) {}
 
-// Example auton
-void Autons::skills(){
+
+void Autons::collect(time){
+
+    ML.set_value(true);
+    front_motor.move(127);
+    pros::delay(time);
+    ML.set_value(false);
+    front_motor.move(0);
 
 }
-void Autons::testAuton() {
-   
+
+void Autons::middle_score(time){
+    front_motor.move(127);
+    back_motor.move(127);
+    pros::delay(time);
+    front_motor.move(0);
+    back_motor.move(0);
+
 }
+
+void Autons::load(){
+    ML.set_value(true);
+    front_motor.move(127);
+    pros::delay(1100);
+    front_motor.move(0);
+}
+
+void Autons::long_score(time){
+    front_motor.move(127);
+    back_motor.move(-127);
+    pros::delay(time);
+    front_motor.move(0);
+    back_motor.move(0);
+
+}
+
+void Autons::wing(){
+    
+}
+
 
 // Add more autons here
 void Autons::skillsAuton() {
+
     front_motor.move(127);
     pros::delay(10000);
     front_motor.move(0);
 }
 
-void Autons::RedRight() {
-    chassis->setPose(-61.4, -18.6, 182);
-    chassis->moveToPoint(-61.4, -20, 5000,{.maxSpeed=97},true);
-}
-void Autons::BlueRight() {
-    chassis->setPose(-61.4, -18.6, 182);
-    chassis->moveToPoint(-61.4, -20, 5000,{.maxSpeed=97},true);
-}
-void Autons::BlueLeft() {
-    RedLeft();
+void Autons::Push7Left() {
 
 }
-void Autons::RedLeft() {
-    chassis->setPose(-47.4, 17.6, 79.5); // starting pose
-
-    front_motor.move(127); // start intake
-
-    chassis->moveToPoint(-21+2, 21, 5000,{.maxSpeed=100},true);// goes infront of middle goal
-    chassis->waitUntil(10);
-    ML.set_value(true);
-    chassis->waitUntilDone();
-    chassis->turnToHeading(315, 3000,{},false);// turns backwards
-    ML.set_value(false);
-    pros::delay(200); 
-    // trns backwards
-
-    MG.set_value(false);
-    lemlib::MoveToPointParams params;
-    params.forwards = false;
-    chassis->moveToPoint(-9.8, 9.8, 3000, params,true); // moves to goal, backwards
-    pros::delay(800);               //let robot settle
-    back_motor.move(127);  // outake blocks
-    pros::delay(2000);
-
-    chassis->setPose(-9.0,9.0,chassis->getPose().theta);   // scores blocks
-    front_motor.brake(); //stop front motor
-    back_motor.brake();    // stop back motor
-    ML.set_value(true);
-    //--
-    //--
-    //---------------------Long goal scoring-------------------------------------
-    //--
-    //--
-    //--
+void Autons::M3L4Right() {
     
-    front_motor.move(0);
-    MG.set_value(true);
-    chassis->moveToPoint(-41.427+1, 48.244, 5000,{.maxSpeed=97}, false); // goes infront of match loader
-
-    chassis->turnToPoint(-67.8, 46.5, 3000,{},false); //turns to face match loader
+}
+void Autons::AWPleft() {
     
-    chassis->moveToPoint(-60.75, 46.5, 1500,{.maxSpeed=90},true); // goes to match loader
-
-    front_motor.move(127);
-    pros::delay(1100); // intake
-    front_motor.move(0);
-
-    chassis->moveToPoint(-15.5, 47.236, 1000, params, false); // should go backward into long goal
-    pros::delay(900); // let robot settle
-    front_motor.move(127);
-    back_motor.move(-127); // score blocks
-    pros::delay(10000);
-    front_motor.move(0); // stop front motor
-    back_motor.move(0); 
-     //--
-    //--
-    //---------------------Wing-------------------------------------
-    //--
-    //--
-    //--
-    //move backward
 }
